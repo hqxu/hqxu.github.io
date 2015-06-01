@@ -55,6 +55,8 @@
 					
 						<li><a href="/archives">Archives</a></li>
 					
+						<li><a href="/project">Project</a></li>
+					
 						<li><a href="/about">About</a></li>
 					
 					<li>
@@ -79,44 +81,47 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/05/25/Markdonw-Tutorial/" title="MarkdownPad2 Tutorial" itemprop="url">MarkdownPad2 Tutorial</a>
+      <a href="/2015/05/28/Bitwise-AND-of-Numbers-Range/" title="LeetCode201 | Bitwise AND of Numbers Range" itemprop="url">LeetCode201 | Bitwise AND of Numbers Range</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Rancho" target="_blank" itemprop="author">Rancho</a>
 		
   <p class="article-time">
-    <time datetime="2015-05-25T09:08:05.000Z" itemprop="datePublished"> 发表于 2015-05-25</time>
+    <time datetime="2015-05-28T06:13:31.000Z" itemprop="datePublished"> 发表于 2015-05-28</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <h2 id="Welcome_to_MarkdownPad_2">Welcome to MarkdownPad 2</h2><p><strong>MarkdownPad</strong> is a full-featured Markdown editor for Windows.</p>
-<h3 id="Built_exclusively_for_Markdown">Built exclusively for Markdown</h3><p>Enjoy first-class Markdown support with easy access to  Markdown syntax and convenient keyboard shortcuts.</p>
-<p>Give them a try:</p>
-<ul>
-<li><strong>Bold</strong> (<code>Ctrl+B</code>) and <em>Italic</em> (<code>Ctrl+I</code>)</li>
-<li>Quotes (<code>Ctrl+Q</code>)</li>
-<li>Code blocks (<code>Ctrl+K</code>)</li>
-<li>Headings 1, 2, 3 (<code>Ctrl+1</code>, <code>Ctrl+2</code>, <code>Ctrl+3</code>)</li>
-<li>Lists (<code>Ctrl+U</code> and <code>Ctrl+Shift+O</code>)</li>
-</ul>
+        <h2 id="问题描述">问题描述</h2><p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.<br>For example, given the range [5, 7], you should return 4.</p>
+<blockquote>
+<p>C++ Code Interface<br>  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rangeBitwiseAnd</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="问题分析">问题分析</h2><p>这道题是说，给定一个数字区间[m, n], 比如说[5, 7], 让我们将<strong>该区间的每一个数字</strong>都做<code>位与运算 &amp;</code>, 问结果是多少？对于[5, 7], 该区间的全部数字为5,6,7。将它们做位与运算, 5 &amp; 6 &amp; 7 =</p>
+<blockquote>
+<p>&nbsp;&nbsp; 0<strong>1</strong>01 &amp;<br>&nbsp;&nbsp; 1<strong>1</strong>00 &amp;<br>&nbsp;&nbsp; 0<strong>1</strong>11<br>= 0<strong>1</strong>00<br>= 4</p>
+</blockquote>
         
         
         <p class="article-more-link">
           
-            <a href="/2015/05/25/Markdonw-Tutorial/#more">阅读更多</a>
+            <a href="/2015/05/28/Bitwise-AND-of-Numbers-Range/#more">阅读更多</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/LeetCode/">LeetCode</a>
+</div>
+
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/markdown/">markdown</a>
+  <span></span> <a href="/tags/LeetCode/">LeetCode</a>
   </div>
 
 </div>
@@ -127,7 +132,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2015/05/25/Markdonw-Tutorial/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/25/Markdonw-Tutorial/" data-count-type="comments">&nbsp;</a>
+		<a href="/2015/05/28/Bitwise-AND-of-Numbers-Range/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/28/Bitwise-AND-of-Numbers-Range/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -211,6 +216,17 @@
 <aside class="clearfix">
 
   
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/LeetCode/" title="LeetCode">LeetCode<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
 
   
 <div class="tagslist">
@@ -218,7 +234,11 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/markdown/" title="markdown">markdown<sup>1</sup></a></li>
+				<li><a href="/tags/LeetCode/" title="LeetCode">LeetCode<sup>1</sup></a></li>
+			
+		
+			
+		
 			
 		
 		</ul>
@@ -235,6 +255,30 @@
   <div class="linkslist">
   <p class="asidetitle">友情链接</p>
     <ul>
+        
+          <li>
+            
+            	<a href="http://zh.lucida.me/" target="_blank" title=" Google工程师(similar)">Lucida&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://freemind.pluskid.org/" target="_blank" title=" 大牛一枚">Free Mind</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://mindhacks.cn/" target="_blank" title=" 刘未鹏的blog">Mind Hacks</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://coolshell.cn/featured_posts" target="_blank" title=" 陈昊的blog">左耳朵耗子</a>
+            
+          </li>
         
           <li>
             
