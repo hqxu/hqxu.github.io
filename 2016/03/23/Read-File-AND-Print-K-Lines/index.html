@@ -1,0 +1,551 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>打印输入文件的最后K行 (循环队列) | Rancho&#39;s Techblog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Rancho">
+    
+
+    
+    <meta name="description" content="题目要求就是读入一个文件，打印出这个文件的最后K行的内容 (要求: 只能读取文件一次)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打印输入文件的最后K行 (循环队列)">
+<meta property="og:url" content="http://hqxu.github.io/2016/03/23/Read-File-AND-Print-K-Lines/index.html">
+<meta property="og:site_name" content="Rancho's Techblog">
+<meta property="og:description" content="题目要求就是读入一个文件，打印出这个文件的最后K行的内容 (要求: 只能读取文件一次)">
+<meta property="og:updated_time" content="2016-03-31T06:29:22.380Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打印输入文件的最后K行 (循环队列)">
+<meta name="twitter:description" content="题目要求就是读入一个文件，打印出这个文件的最后K行的内容 (要求: 只能读取文件一次)">
+
+    
+    
+    <link rel="icon" href="/img/favicon.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Rancho&#39;s Techblog" title="Rancho&#39;s Techblog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rancho&#39;s Techblog">Rancho&#39;s Techblog</a></h1>
+				<h2 class="blog-motto">追求卓越，成功就会在不经意间追上你。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/project">Project</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+    					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+    						<input type="text" id="st-search-inpu" maxlength="20" placeholder="搜索" />
+    					</form>
+					
+					</li>
+				</ul>
+			</nav>		
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/23/Read-File-AND-Print-K-Lines/" title="打印输入文件的最后K行 (循环队列)" itemprop="url">打印输入文件的最后K行 (循环队列)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Rancho" target="_blank" itemprop="author">Rancho</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-23T14:05:13.000Z" itemprop="datePublished"> 发表于 2016-03-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题分析"><span class="toc-number">1.</span> <span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">2.</span> <span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法复杂度分析"><span class="toc-number">2.1.</span> <span class="toc-text">算法复杂度分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">2.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#循环队列"><span class="toc-number">3.</span> <span class="toc-text">循环队列</span></a></li></ol>
+		
+		</div>
+		
+		<p>题目要求就是读入一个文件，打印出这个文件的最后K行的内容 (要求: <strong>只能读取文件一次</strong>)<br><a id="more"></a></p>
+<h2 id="问题分析">问题分析</h2><p>最简单的方案，就是先遍历一下文件，统计出行数N。然后打印出N-K+1行到第N行的内容。但是这么一来，就需要读两遍文件。众所周知, 相比内存, 文件IO是比较耗时的。</p>
+<p>面试官要求只能读取文件一次，在此想到数据结构中的<code>循环队列</code>。嗯， 我们可以使用一个数组，存放从文件读取到的所有K行和最后的K行。因此，这个数组起初包含的是1~K行，然后是2~K+1行，接着是3~K+2行，以此类推。每次读取新的一行，就将数组中最早读入的那一行清掉。用空间换时间（trade-off)</p>
+<pre><code>相关知识点: 循环队列(circular <span class="built_in">queue</span>); 循环式数组(circular <span class="built_in">array</span>);
+</code></pre><h2 id="解决方案">解决方案</h2><h3 id="算法复杂度分析">算法复杂度分析</h3><p>  该方案只需读取文件一次，并且任意时刻只会在内存里存放K行内容。<strong>时间复杂度</strong>为<code>O( N )</code>,  <strong>空间复杂度</strong>为<code>O( K )</code></p>
+<h3 id="代码实现">代码实现</h3>  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> K = <span class="number">10</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printLastKLine</span><span class="params">(<span class="built_in">string</span> fileName)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="function">ifstream <span class="title">infile</span><span class="params">(fileName)</span></span>;</span><br><span class="line">  <span class="built_in">string</span> lines[K];                 <span class="comment">// vector&lt;string&gt; lines;</span></span><br><span class="line">  <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 逐行读取文件，并存入循环式数组</span></span><br><span class="line">  <span class="keyword">while</span>( getline(infile, lines[size++ % K]) ) ;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算循环式数组的开头和大小 (考虑总行数size小于K的情况)</span></span><br><span class="line">  <span class="keyword">int</span> start = size&gt;K ? (size%K) : <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> count = min(K, size);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 根据读取顺序，打印数组元素</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;count; i++)</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; lines[ (start+i) % K] &lt;&lt; endl;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="循环队列">循环队列</h2><p>队列（queue）是只允许在一端进行插入操作，而在另一端进行删除操作的线性表。是一种先进先出的线性表（FIFO）。 允许插入的一端称为队尾(rear)，允许删除的一端称为队头(front)。相比栈(stack), 栈操作的top指针在push时增大而在pop时减小，栈空间是可以重复利用的，而队列的front、rear指针都在一直增大，虽然前面的元素已经出队了，但它所占的存储空间却不能重复利用(<code>假溢出问题</code>)。但大多数程序并不是这样使用队列的，<strong>一般情况下出队的元素就不再有保存价值了，这些元素的存储空间应该回收利用，由此想到把队列改造成环形队列</strong>(<code>Circular queue</code>): 把queue数组想像成一个圈，front和 rear指针仍然是一直增大的，当指到数组末尾时就自动回到数组开头，就像两个人围着操场赛跑，沿着它们跑的方向看，从 front到rear之间是队列的有效元素，从rear到front之间是空的存储位置，如果front追上rear就表示队列空了，如果rear 追上front就表示队列的存储空间满了。故一般我们将queue实现为循环队列，当出队列时就不需要全部进行移动，只需要修改 队头指针，从而解决“假溢出”的问题。</p>
+<p>注1：为了避免队列空和满两个状态混淆，采用空闲一个位置的方式，即N个元素空间的循环队列最多只能存放N-1个有效元素。<br>     可参考这个说明：<a href="http://www.nowamagic.net/librarys/veda/detail/2351" target="_blank" rel="external">http://www.nowamagic.net/librarys/veda/detail/2351</a></p>
+<p>注2: 循环队列的提出，是为了有效的利用空间，解决了队列的”假溢出”问题。但要注意的是循环队列仍可能面临数组溢出的问题。</p>
+<pre><code>-<span class="ruby"> 循环队列初始化：front=rear=<span class="number">0</span>
+</span>-<span class="ruby"> 入队操作：rear=(rear+<span class="number">1</span>)%size
+</span>-<span class="ruby"> 出队操作：front=(front+<span class="number">1</span>)%size
+</span>-<span class="ruby"> 队列长度<span class="symbol">:</span> (rear-front+size)%size
+</span>-<span class="ruby"> 判断是否为空队列：front==rear
+</span>-<span class="ruby"> 判断队列是否已满：front==(rear+<span class="number">1</span>)%size</span>
+</code></pre><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> &lt;iostream&gt;  </span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;  </span><br><span class="line"></span><br><span class="line"><span class="comment">/*循环队列的类型定义*/</span>  </span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Queue_Size=<span class="number">100</span>;  </span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> circularQueue  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">char</span> *elem;  </span><br><span class="line">    <span class="keyword">int</span> front;</span><br><span class="line">    <span class="keyword">int</span> rear;  </span><br><span class="line">    <span class="keyword">int</span> size;  </span><br><span class="line">&#125;circularQueue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 入队  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(circularQueue &amp;Q, <span class="keyword">char</span> x)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    <span class="keyword">if</span>( isFull(Q) )  <span class="comment">//判断栈满的情况  </span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Queue OverFlow!"</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> ; </span><br><span class="line">    &#125;</span><br><span class="line">               </span><br><span class="line">    Q.elem[Q.rear] = x;  </span><br><span class="line">    Q.rear = (Q.rear+<span class="number">1</span>) % Q.size;  <span class="comment">//尾指针应以此种方式加1，才会实现循环队列。  </span></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="comment">//出队</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">pop</span><span class="params">(circularQueue &amp;Q)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    <span class="keyword">if</span>( isEmpty() )  </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Queue Empty"</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span> e = Q.elem[Q.front];  </span><br><span class="line">    Q.front = (Q.front+<span class="number">1</span>) % Q.size; <span class="comment">// 头指针应以此种方式加1，才会实现循环队列。  </span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> e;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(circularQueue &amp;Q)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    Q.elem = <span class="keyword">new</span> <span class="keyword">char</span>[Queue_Size];  </span><br><span class="line">    Q.front = Q.rear = <span class="number">0</span>;            </span><br><span class="line">    Q.size = Queue_Size;    <span class="comment">// default init size: 100</span></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁队列  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">destroy</span><span class="params">(circularQueue &amp;Q)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    <span class="keyword">delete</span> [] Q.elem;  </span><br><span class="line"></span><br><span class="line">    Q.front = Q.rear = <span class="number">0</span>;  </span><br><span class="line">    Q.size = <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="comment">//首尾指针相等说明队列为空</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isEmpty</span><span class="params">(<span class="keyword">const</span> circularQueue &amp;Q)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Q.front == Q.rear;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//为了区别isEmpty, '浪费'一个空间来标识队满的情形</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isFull</span><span class="params">(<span class="keyword">const</span> circularQueue &amp;Q)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (Q.rear+<span class="number">1</span>)%Q.size == Q.front;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 求队列的长度, 考虑两种情况(rear大于front，以及小于front的情形)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">(<span class="keyword">const</span> circularQueue &amp;Q)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    <span class="keyword">return</span> (Q.rear-Q.front+Q.size) % Q.size;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traveres</span><span class="params">(<span class="keyword">const</span> circularQueue &amp;Q)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=Q.front; i!=Q.rear; i=(i+<span class="number">1</span>)%Q.size)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; Q.elem[i] &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    circularQueue Q;  </span><br><span class="line">    </span><br><span class="line">    init(Q);  </span><br><span class="line">       </span><br><span class="line">    push(Q,<span class="string">'a'</span>);  </span><br><span class="line">    push(Q,<span class="string">'b'</span>);  </span><br><span class="line">    push(Q,<span class="string">'c'</span>);  </span><br><span class="line">       </span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; pop(Q) &lt;&lt; endl;  </span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; pop(Q) &lt;&lt; endl;  </span><br><span class="line">       </span><br><span class="line">    destroy(Q);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/面试题/">面试题</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/面试题/">面试题</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://hqxu.github.io/2016/03/23/Read-File-AND-Print-K-Lines/" data-title="打印输入文件的最后K行 (循环队列) | Rancho&#39;s Techblog" data-tsina="2357116481" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/03/28/Build-Binary-Tree-AND-Print/" title="读入父子结点关系对，构建二叉树并输出 (百度面试题)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  读入父子结点关系对，构建二叉树并输出 (百度面试题)</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/03/17/Reorder-List/"  title="LeetCode143 | Reorder List (小米面试题)">
+ <strong>下一篇：</strong><br/> 
+ <span>LeetCode143 | Reorder List (小米面试题)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/03/23/Read-File-AND-Print-K-Lines/" data-title="打印输入文件的最后K行 (循环队列)" data-url="http://hqxu.github.io/2016/03/23/Read-File-AND-Print-K-Lines/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题分析"><span class="toc-number">1.</span> <span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">2.</span> <span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法复杂度分析"><span class="toc-number">2.1.</span> <span class="toc-text">算法复杂度分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">2.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#循环队列"><span class="toc-number">3.</span> <span class="toc-text">循环队列</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/LeetCode/" title="LeetCode">LeetCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/" title="数据挖掘">数据挖掘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/面试题/" title="面试题">面试题<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/面试题/" title="面试题">面试题<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/LeetCode/" title="LeetCode">LeetCode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/互联网职位/" title="互联网职位">互联网职位<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据挖掘/" title="数据挖掘">数据挖掘<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jasonding.top/" target="_blank" title=" 机器学习">Jason&#39;s Techblog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://freemind.pluskid.org/" target="_blank" title=" 机器学习">Free Mind</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/abcjennifer" target="_blank" title="Rachel Zhang&#39;s Blog">Rachel Zhang&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/v_JULY_v" target="_blank" title=" 面试&算数数据结构">JULY&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://zh.lucida.me/" target="_blank" title=" Google工程师(similar)">Lucida&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://mindhacks.cn/" target="_blank" title=" 刘未鹏的blog">Mind Hacks</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://coolshell.cn/featured_posts" target="_blank" title=" 陈昊的blog">左耳朵耗子</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://zipperary.com/" target="_blank" title=" 阿里大数据竞赛">Zippera&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title=" Hexo">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2357116481&verifier=1ccfb61e&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Welcome to this blog, I&#39;m Rancho(徐函秋) <br/>
+			I&#39;d like to share my idea and learning experience with you.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2357116481" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="https://www.zhihu.com/people/hqxu" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:xuhanqiu2015@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Rancho">Rancho</a>
+		
+		
+		</p>
+
+		<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','1yJXRyaz19XCy6VdXJy9','2.0.0');
+</script>
+</div>
+
+
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"hqxu"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
