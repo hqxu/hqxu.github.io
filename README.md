@@ -1,13 +1,12 @@
-# hqxu.github.io
-Xiaoqiu's homepage
-
+# hqxu.github.io个人博客
 小秋的个人Blog
-平常写文章很方便呀。 在source/_posts撰写自己的文章即可。然后
-hexo s 实时动态预览文章内容， 觉得满意以后：
-hexo g 生成静态网页至public， 然后推送到github上:
-hexo d
+平常写文章很方便呀。 在source/_posts撰写自己的文章即可。然后 <br />
+**hexo s** 实时动态预览文章内容， 觉得满意以后：  <br />
+**hexo g** 生成静态网页至public， 然后推送到github上: <br />
+**hexo d**
 
 ==================
+
 Hexo博客备份 (在新的机器，或另外一台电脑时. 需要安装git, nodejs, nmp, hexo) 
 https://blog.itswincer.com/posts/7efd2818/
 
