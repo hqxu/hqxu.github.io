@@ -12,7 +12,7 @@
 
     
     <meta name="description" content="目前，几乎各个公司都有自己的数据挖掘组，大到几十几百人的Big Data团队，小到几个核心人员，针对不同的产品、业务进行开发，处于不同的环境、平台。从资讯到旅游，从传统的互联网行业到金融……  看似差别很大，其实核心问题很多都是一致的。如User Profile: 特殊人群的发现，用户年龄的预测, 用户信用评估；相关内容的推荐(商品，资讯，旅游景点)；垃圾内容的识别等等。嗯，体会实际工作与在学校期">
-<meta name="keywords" content="数据挖掘,互联网职位">
+<meta name="keywords" content="互联网职位,数据挖掘">
 <meta property="og:type" content="article">
 <meta property="og:title" content="互联网公司&quot;数据挖掘岗&quot;做什么？">
 <meta property="og:url" content="http://hqxu.github.io/2016/03/29/Intro-DataMining-Group-in-Company/index.html">
@@ -20,7 +20,7 @@
 <meta property="og:description" content="目前，几乎各个公司都有自己的数据挖掘组，大到几十几百人的Big Data团队，小到几个核心人员，针对不同的产品、业务进行开发，处于不同的环境、平台。从资讯到旅游，从传统的互联网行业到金融……  看似差别很大，其实核心问题很多都是一致的。如User Profile: 特殊人群的发现，用户年龄的预测, 用户信用评估；相关内容的推荐(商品，资讯，旅游景点)；垃圾内容的识别等等。嗯，体会实际工作与在学校期">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://7xjbmr.com1.z0.glb.clouddn.com/DM-Group-Strcture.png?imageView2/2/w/800/q/75">
-<meta property="og:updated_time" content="2016-03-30T03:31:46.193Z">
+<meta property="og:updated_time" content="2019-08-20T11:50:39.459Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="互联网公司&quot;数据挖掘岗&quot;做什么？">
 <meta name="twitter:description" content="目前，几乎各个公司都有自己的数据挖掘组，大到几十几百人的Big Data团队，小到几个核心人员，针对不同的产品、业务进行开发，处于不同的环境、平台。从资讯到旅游，从传统的互联网行业到金融……  看似差别很大，其实核心问题很多都是一致的。如User Profile: 特殊人群的发现，用户年龄的预测, 用户信用评估；相关内容的推荐(商品，资讯，旅游景点)；垃圾内容的识别等等。嗯，体会实际工作与在学校期">
@@ -120,12 +120,15 @@
 <p>我是宝宝树算法与数据组的一名工程师，记得刚来公司的时候，介绍自己工作时写到：“主要<strong>负责维护与改进</strong>宝宝树的自然语言处理、<strong>数据挖掘、推荐系统等相关领域的算法及应用</strong>”，大家都不甚明白，转眼已经来公司大半年了，可能是因为<code>我们的工作都隐藏在众多产品的背后</code>，很多同事仍然对我们的工作有点云里雾里。今天希望通过这篇博客可以把我们的工作讲得更清楚一点。</p>
 <p>如果用一句话来概括我们的工作，那就是“挖掘数据中的宝藏”。大家是不是越听越糊涂了，让我举几个我们最近工作中的实际例子吧。</p>
 <h3 id="1)_相关问答">1) 相关问答</h3><p>妈妈们在养育宝宝的过程中会遇到各种各样的问题，宝宝树的育儿问答是一个解决妈妈们疑问的好地方，但是往往看了一个答案之后并不能完全解决自己的疑问，因此想看看<strong>与这个问题相似的其他问题</strong>，可是从几百万问题中找到这些问题可不容易。这时候我们就上场了，我们会从这些问题的内容数据和用户的点击数据中挖掘宝藏，通过这些数据找出与这个问题主题一致且回答质量较高的问题，以及点击了这个问题的妈妈还会看的一些问题，在相关问答模块中展示出来，这样妈妈们就不用自己挨个儿找了，是不是很方便啊?。<strong>这部分工作的难点包括</strong>：</p>
-<pre><code><span class="bullet">1. </span>提问的内容，都相对较短，基本上就是一二句话的事，算法难以捕捉每个问题的核心诉求，给计算问题间的相关性带来挑战，而且这种短文本相关度计算，即使在当今学术界也是热门研究方向，每年有不少研究性论文出炉路；
+<pre><code><span class="bullet">1. </span>提问的内容，都相对较短，基本上就是一二句话的事，算法难以捕捉每个问题的核心诉求，给计算问题间的相关性带来挑战，而且这种
+短文本相关度计算，即使在当今学术界也是热门研究方向，每年有不少研究性论文出炉路；
 
-<span class="bullet">2. </span>海量的问题库，给问题相关性计算带来巨大的计算量，如果按照常规方法计算，需要接近1台较好的计算机花1年的时间来计算几百万问题的相关性，我们研究和优化了各种计算方法，使得计算时间缩短在几天内完成。
+<span class="bullet">2. </span>海量的问题库，给问题相关性计算带来巨大的计算量，如果按照常规方法计算，需要接近1台较好的计算机花1年的时间来计算几百万问
+题的相关性，我们研究和优化了各种计算方法，使得计算时间缩短在几天内完成。
 </code></pre><h3 id="2)_宝宝年龄预测">2) 宝宝年龄预测</h3><p>我们的研究结果显示，妈妈们从准备怀孕到怀孕期间以至于宝宝出生后的这几年内，基本上每个月所关心的话题都在变化，这种变化在孕期和宝宝出生的1年内，尤其显著。这与事实也非常相符。妈妈们在宝宝树上浏览内容的时候肯定希望看到更多的与自己宝宝年龄段相关的内容，而其他年龄段适用的妈妈们暂时用不上，最好展现的少一点或者不展示。</p>
 <p>宝宝们年龄存在很大的差异，而浏览宝宝树的妈妈有相当一大部分是非登录用户，我们并不知道她们的宝宝年龄，这时候我们是不是就束手无策了呢？不是的，<strong>妈妈们浏览的信息中就会漏出一些蛛丝马迹，我们对妈妈们的点击数据进行挖掘就能<code>给出一个宝宝的年龄的大致范围</code>，从而根据这个预测出来的宝宝年龄，给各位妈妈提供个性化内容服务。</strong> 这部分工作的难点包括：</p>
-<pre><code><span class="bullet">1. </span>年龄预测的结果要相对细腻，最好能精细到宝宝的具体月份，造成可预测的月份范围非常大，陡然提升了预测的难度与准确性；要知道Google和Facebook也非常重视其用户的年龄信息并做预测以提供更精准的广告，但他们预测的精度以每5年为一个阶段；
+<pre><code><span class="bullet">1. </span>年龄预测的结果要相对细腻，最好能精细到宝宝的具体月份，造成可预测的月份范围非常大，陡然提升了预测的难度与准确性；要知道
+Google和Facebook也非常重视其用户的年龄信息并做预测以提供更精准的广告，但他们预测的精度以每5年为一个阶段；
 
 <span class="bullet">2. </span>宝宝年龄是自然增长的，因此预测出来的结果，要跟得上这种自然增长的趋势而不断更新算法和预测结果； 
 
@@ -154,7 +157,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/数据挖掘/">数据挖掘</a><a href="/tags/互联网职位/">互联网职位</a>
+  <span></span> <a href="/tags/互联网职位/">互联网职位</a><a href="/tags/数据挖掘/">数据挖掘</a>
   </div>
 
 </div>
@@ -163,7 +166,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://hqxu.github.io/2016/03/29/Intro-DataMining-Group-in-Company/" data-title="互联网公司&quot;数据挖掘岗&quot;做什么？ | Rancho&#39;s Techblog" data-tsina="2357116481" class="share clearfix">
+	  <div data-url="http://hqxu.github.io/2016/03/29/Intro-DataMining-Group-in-Company/" data-title="互联网公司&quot;数据挖掘岗&quot;做什么？ | Rancho&#39;s Techblog" data-tsina="undefined" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -221,7 +224,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/LeetCode/" title="LeetCode">LeetCode<sup>1</sup></a></li>
+			<li><a href="/categories/成长感悟/" title="成长感悟">成长感悟<sup>2</sup></a></li>
 		  
 		
 		  
@@ -229,7 +232,7 @@
 		  
 		
 		  
-			<li><a href="/categories/面试题/" title="面试题">面试题<sup>3</sup></a></li>
+			<li><a href="/categories/面试题/" title="面试题">面试题<sup>4</sup></a></li>
 		  
 		
 		</ul>
@@ -242,7 +245,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/面试题/" title="面试题">面试题<sup>3</sup></a></li>
+				<li><a href="/tags/面试题/" title="面试题">面试题<sup>4</sup></a></li>
 			
 		
 			
@@ -257,6 +260,10 @@
 				<li><a href="/tags/数据挖掘/" title="数据挖掘">数据挖掘<sup>1</sup></a></li>
 			
 		
+			
+				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>1</sup></a></li>
+			
+		
 		</ul>
 </div>
 
@@ -264,19 +271,13 @@
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 
   <div class="linkslist">
   <p class="asidetitle">友情链接</p>
     <ul>
-        
-          <li>
-            
-            	<a href="http://blog.jasonding.top/" target="_blank" title=" 机器学习">Jason&#39;s Techblog</a>
-            
-          </li>
         
           <li>
             
@@ -310,30 +311,12 @@
         
           <li>
             
-            	<a href="http://coolshell.cn/featured_posts" target="_blank" title=" 陈昊的blog">左耳朵耗子</a>
-            
-          </li>
-        
-          <li>
-            
-            	<a href="http://zipperary.com/" target="_blank" title=" 阿里大数据竞赛">Zippera&#39;s Blog</a>
-            
-          </li>
-        
-          <li>
-            
             	<a href="http://wuchong.me" target="_blank" title=" Hexo">Jark&#39;s Blog</a>
             
           </li>
         
     </ul>
 </div>
-
-  <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2357116481&verifier=1ccfb61e&dpc=1"></iframe>
-</div>
-
 
 </aside>
 </div>
@@ -353,8 +336,6 @@
 	 
 	<div class="social-font" class="clearfix">
 		
-		<a href="http://weibo.com/2357116481" target="_blank" class="icon-weibo" title="微博"></a>
-		
 		
 		
 		
@@ -366,7 +347,7 @@
 		
 		
 		
-		<a href="mailto:xuhanqiu2015@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		<a href="mailto:xuhanqiu.cs@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
 		
 	</div>
 			
